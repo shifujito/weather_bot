@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -21,4 +22,13 @@ func main() {
 		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
 		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
 	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// テキストメッセージを生成
+	weather.weather()
+	message := linebot.NewTextMessage("Hello, World")
+	if _, err := bot.BroadcastMessage(message).Do(); err != nil {
+		log.Fatal(err)
+	}
 }

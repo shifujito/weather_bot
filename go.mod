@@ -1,4 +1,4 @@
-module weather
+module github.com/FUJITOSHION/weather_bot
 
 go 1.17
 
