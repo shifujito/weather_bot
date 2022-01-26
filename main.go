@@ -52,7 +52,7 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", lineHandler)
 	server := http.Server{
 		Addr:    ":" + os.Getenv("PORT"),
 		Handler: nil,
