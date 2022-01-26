@@ -37,6 +37,10 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// http.HandleFunc("/", helloHandler)
+	server := http.Server{
+		Addr:    ":" + os.Getenv("PORT"),
+		Handler: nil,
+	}
 	http.HandleFunc("/", lineHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(server.ListenAndServe())
 }
