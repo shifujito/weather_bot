@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -16,7 +17,7 @@ func loadEnv() {
 	}
 }
 
-func main() {
+func lineHandler(w http.ResponseWriter, r *http.Request) {
 	loadEnv()
 	bot, err := linebot.New(
 		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
@@ -25,10 +26,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// テキストメッセージを生成
-	weather.weather()
-	message := linebot.NewTextMessage("Hello, World")
+
+	message := linebot.NewTextMessage("hello, world")
+	// テキストメッセージを友達登録しているユーザー全員に配信する
 	if _, err := bot.BroadcastMessage(message).Do(); err != nil {
 		log.Fatal(err)
 	}
+
+}
+
+func main() {
+	// http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", lineHandler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

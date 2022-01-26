@@ -22,7 +22,7 @@ func httpGetStr(url string) string {
 
 }
 
-func weather() {
+func Weather() {
 	result := GetWeather()
 	fmt.Println(result)
 }
