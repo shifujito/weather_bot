@@ -31,8 +31,9 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 	// テキストメッセージを友達登録しているユーザー全員に配信する
 	if _, err := bot.BroadcastMessage(message).Do(); err != nil {
 		log.Fatal(err)
-
 	}
+	events, _ := bot.ParseRequest(r)
+	fmt.Println(events)
 
 }
 
@@ -42,6 +43,7 @@ func main() {
 		Addr:    ":" + os.Getenv("PORT"),
 		Handler: nil,
 	}
-	http.HandleFunc("/", lineHandler)
+	// http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/callback", lineHandler)
 	log.Fatal(server.ListenAndServe())
 }
