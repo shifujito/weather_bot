@@ -47,6 +47,7 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	fmt.Println(r)
+	fmt.Println(r.Body)
 	events, _ := bot.ParseRequest(r)
 	fmt.Println("events", events)
 }
