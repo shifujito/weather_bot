@@ -25,7 +25,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
 	)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("環境変数", err)
 	}
 	events, _ := bot.ParseRequest(r)
 	fmt.Println("events", events)
