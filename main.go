@@ -19,6 +19,16 @@ func loadEnv() {
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	msg := "Hello World!!!!"
 	fmt.Fprintf(w, msg)
+	loadEnv()
+	bot, err := linebot.New(
+		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
+		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	events, _ := bot.ParseRequest(r)
+	fmt.Println("events", events)
 }
 
 func lineHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +48,6 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	events, _ := bot.ParseRequest(r)
 	fmt.Println("events", events)
-
 }
 
 func main() {
