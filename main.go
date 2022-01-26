@@ -16,6 +16,10 @@ func loadEnv() {
 		fmt.Print("環境変数が読み込めませんでした。")
 	}
 }
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	msg := "Hello World!!!!"
+	fmt.Fprintf(w, msg)
+}
 
 func lineHandler(w http.ResponseWriter, r *http.Request) {
 	loadEnv()
@@ -33,12 +37,12 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	events, _ := bot.ParseRequest(r)
-	fmt.Println(events)
+	fmt.Println("events", events)
 
 }
 
 func main() {
-	// http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", helloHandler)
 	server := http.Server{
 		Addr:    ":" + os.Getenv("PORT"),
 		Handler: nil,
