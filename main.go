@@ -38,8 +38,8 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 	if _, err := bot.BroadcastMessage(message).Do(); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(r)
-	fmt.Println(r.Body)
+	fmt.Println("r", r)
+	fmt.Println("body", r.Body)
 	events, _ := bot.ParseRequest(r)
 	fmt.Println("events", events)
 }
