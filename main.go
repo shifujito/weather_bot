@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -18,6 +20,35 @@ func loadEnv() (bot *linebot.Client) {
 		log.Fatal(err)
 	}
 	return bot
+}
+
+type WeatherType struct {
+	Area string `json:"targetArea"`
+	Body string `json:"text"`
+}
+
+func GetWeather() string {
+	json := httpGetStr("https://www.jma.go.jp/bosai/forecast/data/overview_forecast/130000.json")
+	weather := formatWeather(json)
+	return weather.Area + weather.Body
+}
+
+func httpGetStr(url string) string {
+	response, err := http.Get(url)
+	if err != nil {
+		log.Fatal("Get Http Error", err)
+	}
+	body, _ := io.ReadAll(response.Body)
+	return string(body)
+
+}
+
+func formatWeather(str string) *WeatherType {
+	weather := new(WeatherType)
+	if err := json.Unmarshal([]byte(str), weather); err != nil {
+		log.Fatal("JSON Unmarshal error:", err)
+	}
+	return weather
 }
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,12 +68,22 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(textParser(message.Text))).Do(); err != nil {
 					log.Print(err)
 				}
 			}
 		}
 	}
+}
+
+func textParser(text string) string {
+	result := GetWeather()
+	return result
+}
+
+func prefectureCode(text string) int {
+	// return pref_code
+	return 1
 }
 
 func main() {
