@@ -79,14 +79,18 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func textParser(text string) string {
-	code := getPrefectureCode(text)
+	code, hasCode := getPrefectureCode(text)
+	if !hasCode {
+		return "天気予報が知りたい都道府県を入力してください。"
+	}
 	result := GetWeather(code)
 	return result
 }
 
-func getPrefectureCode(text string) int {
+func getPrefectureCode(text string) (int, bool) {
 	pref_code_map := map[string]int{"東京都": 13}
-	return pref_code_map[text]
+	code, hasCode := pref_code_map[text]
+	return code, hasCode
 }
 
 func main() {
