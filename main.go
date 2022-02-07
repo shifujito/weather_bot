@@ -14,6 +14,7 @@ func loadEnv() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Print("環境変数が読み込めませんでした。")
+		fmt.Print(err)
 	}
 }
 func helloHandler(w http.ResponseWriter, r *http.Request) {
