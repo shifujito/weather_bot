@@ -33,7 +33,7 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	message := linebot.NewTextMessage("hello, world")
+	message := linebot.NewTextMessage("hello, world2")
 	// テキストメッセージを友達登録しているユーザー全員に配信する
 	if _, err := bot.BroadcastMessage(message).Do(); err != nil {
 		log.Fatal(err)
