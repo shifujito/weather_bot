@@ -41,7 +41,9 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("r", r)
 	fmt.Println("body", r.Body)
 	events, _ := bot.ParseRequest(r)
-	fmt.Println("events", events)
+	for _, event := range events {
+		fmt.Println(event.Message)
+	}
 }
 
 func main() {
