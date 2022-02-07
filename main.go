@@ -58,7 +58,7 @@ func main() {
 		Addr:    ":" + os.Getenv("PORT"),
 		Handler: nil,
 	}
-	// http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", helloHandler)
 	http.HandleFunc("/callback", lineHandler)
 	log.Fatal(server.ListenAndServe())
 }
