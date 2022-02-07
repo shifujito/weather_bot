@@ -68,6 +68,7 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
+				fmt.Println("a")
 				fmt.Println(message.Text, event.ReplyToken)
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(textParser(message.Text))).Do(); err != nil {
 					log.Print(err)
