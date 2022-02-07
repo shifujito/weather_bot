@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -27,8 +28,9 @@ type WeatherType struct {
 	Body string `json:"text"`
 }
 
-func GetWeather() string {
-	json := httpGetStr("https://www.jma.go.jp/bosai/forecast/data/overview_forecast/130000.json")
+func GetWeather(code int) string {
+	strCode := strconv.Itoa(code)
+	json := httpGetStr("https://www.jma.go.jp/bosai/forecast/data/overview_forecast/" + strCode + "0000.json")
 	weather := formatWeather(json)
 	return weather.Area + weather.Body
 }
@@ -77,13 +79,14 @@ func lineHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func textParser(text string) string {
-	result := GetWeather()
+	code := getPrefectureCode(text)
+	result := GetWeather(code)
 	return result
 }
 
-func prefectureCode(text string) int {
-	// return pref_code
-	return 1
+func getPrefectureCode(text string) int {
+	pref_code_map := map[string]int{"東京都": 13}
+	return pref_code_map[text]
 }
 
 func main() {
